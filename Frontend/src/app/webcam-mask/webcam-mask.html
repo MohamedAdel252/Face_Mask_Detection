@@ -1,0 +1,13 @@
+<div class="camera-box">
+  <video #video autoplay muted playsinline></video>
+  <canvas #canvas hidden></canvas>
+
+  <div class="result-card" *ngIf="result">
+    <h2>{{ result.status }}</h2>
+    <p>Confidence: {{ result.confidence }}%</p>
+    <p>Action: {{ result.action }}</p>
+  </div>
+
+  <button (click)="startCamera()">Start Camera</button>
+  <button (click)="stopCamera()">Stop Camera</button>
+</div>

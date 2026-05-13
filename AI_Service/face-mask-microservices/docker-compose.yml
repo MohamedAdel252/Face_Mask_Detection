@@ -1,0 +1,63 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    mem_limit: 512m
+
+  prediction-service:
+    build: ./prediction-service
+    container_name: prediction-service
+    ports:
+      - "8001:8001"
+    mem_limit: 3g
+
+  image-service:
+    build: ./image-service
+    container_name: image-service
+    ports:
+      - "8002:8002"
+    mem_limit: 512m
+
+  logging-service:
+    build: ./logging-service
+    container_name: logging-service
+    ports:
+      - "8003:8003"
+    depends_on:
+      - rabbitmq
+    mem_limit: 256m
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    ports:
+      - "8004:8004"
+    depends_on:
+      - rabbitmq
+    mem_limit: 256m
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - prediction-service
+      - image-service
+      - logging-service
+      - notification-service
+      - rabbitmq
+    mem_limit: 512m
+
+  frontend:
+    build: 
+      context: "C:/Books/Level 3/Sem 2/Advanced ML/Angular/mask-ui-clean"
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "8080:4200"
+    depends_on:
+      - gateway

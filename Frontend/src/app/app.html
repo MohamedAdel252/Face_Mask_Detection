@@ -1,0 +1,120 @@
+<div class="page">
+  <div class="background-glow glow-1"></div>
+  <div class="background-glow glow-2"></div>
+
+  <div class="app-shell">
+    <div class="hero">
+      <div class="badge">AI Vision Project</div>
+      <h1>Mask Detector</h1>
+      <p>
+        Smart face mask detection powered by <span>MobileNetV2</span> and FastAPI.
+        Upload an image and get an instant safety screening result.
+      </p>
+    </div>
+
+    <div class="main-card">
+      <div class="card-header">
+        <div>
+          <h2>Face Mask Analyzer</h2>
+          <p>Upload a face image to run prediction.</p>
+        </div>
+        <div class="model-chip">Detector v1</div>
+      </div>
+
+      <div class="upload-section">
+        <div class="upload-box" (click)="fileInput.click()">
+          <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+
+          <div *ngIf="!previewUrl" class="upload-placeholder">
+            <div class="upload-icon">⬆</div>
+            <h3>Upload Image</h3>
+            <p>Choose a face image to start prediction</p>
+          </div>
+
+          <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview" class="preview-image">
+        </div>
+
+        <div class="actions">
+          <button class="primary-btn" (click)="predict()" [disabled]="!selectedFile || loading">
+            {{ loading ? 'Analyzing...' : 'Run Detection' }}
+          </button>
+
+          <button class="secondary-btn" (click)="reset()" [disabled]="loading">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <div class="camera-section">
+        <h3>Real-time Camera Detection</h3>
+
+        <div class="camera-box">
+          <video #video autoplay muted playsinline></video>
+          <canvas #canvas hidden></canvas>
+        </div>
+
+        <div class="actions">
+          <button class="primary-btn" (click)="startCamera()" [disabled]="cameraRunning">
+            Start Camera
+          </button>
+
+          <button class="secondary-btn" (click)="stopCamera()" [disabled]="!cameraRunning">
+            Stop Camera
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-box">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="loading" class="loading-box">
+        <div class="loader"></div>
+        <p>Analyzing image, please wait...</p>
+      </div>
+
+      <div *ngIf="result" class="result-box" [ngClass]="getStatusClass()">
+        <div class="result-top">
+          <div>
+            <p class="result-label">Detection Result</p>
+            <h3>{{ formatStatus(result.status) }}</h3>
+          </div>
+          <div class="status-pill" [ngClass]="getStatusClass()">
+            {{ result.status === 'with_mask' ? 'SAFE' : 'ALERT' }}
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-item">
+            <span>Status</span>
+            <strong>{{ result.status }}</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Confidence</span>
+            <strong>{{ result.confidence }}%</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Recommended Action</span>
+            <strong>{{ result.action }}</strong>
+          </div>
+        </div>
+
+        <div class="confidence-section">
+          <div class="confidence-head">
+            <span>Confidence Score</span>
+            <span>{{ result.confidence }}%</span>
+          </div>
+          <div class="confidence-bar">
+            <div class="confidence-fill" [style.width]="getConfidenceWidth()"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Built for Face Mask Detection using Transfer Learning, FastAPI, and Angular.
+    </div>
+  </div>
+</div>
