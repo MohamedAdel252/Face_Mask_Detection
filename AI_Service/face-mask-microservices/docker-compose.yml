@@ -54,7 +54,7 @@ services:
 
   frontend:
     build: 
-      context: "C:/Books/Level 3/Sem 2/Advanced ML/Angular/mask-ui-clean"
+      context: "../Angular_Frontend"
       dockerfile: Dockerfile
     container_name: frontend
     ports:
