@@ -21,6 +21,7 @@ The system is designed using a **Microservices Architecture** to ensure scalabil
 ## 🚀 Tech Stack
 
 - **Artificial Intelligence:** Python, PyTorch, OpenCV, NumPy.
+- **Backend Framework:** FastAPI.
 - **Frontend:** Angular, TypeScript, Bootstrap/Tailwind.
 - **Containerization:** Docker, Docker Compose.
 - **Messaging:** RabbitMQ (Message Broker).
@@ -58,7 +59,6 @@ In a separate terminal, build and run the frontend container:
 ```bash
 cd Angular_Frontend
 docker build -t mask-frontend .
-docker run -p 8080:4200 mask-frontend
 ```
 
 ---
